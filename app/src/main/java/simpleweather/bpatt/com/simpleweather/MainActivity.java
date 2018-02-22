@@ -85,8 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(channel);
         }
-
-
+        
         mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
     }
 
@@ -98,7 +97,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             String weather = current.getString("Weather");
 
             notifyUser(temp, weather);
-            System.out.println(temp);
         } catch(JSONException e) {
             e.printStackTrace();
         }
@@ -111,22 +109,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
         protected String doInBackground(String... params) {
             String response = "";
             try {
+                // create a url
                 URL url = new URL(WX_URL);
+                // create a HttpUrlConnection for server communication and open the connection
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                // connect to the endpoint
                 connection.connect();
+                // create a stream to load the bytes into
                 InputStream in = connection.getInputStream();
 
+                // BufferedReader
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"), 8);
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
                 }
-
-                System.out.println(connection.getContent());
-                System.out.println(connection.getContentType());
-                System.out.println(connection.getResponseCode());
-                System.out.println(connection.getResponseMessage());
 
                 response = sb.toString();
 
